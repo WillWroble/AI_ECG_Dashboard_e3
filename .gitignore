@@ -1,0 +1,3 @@
+/.venv
+/dat_to_ECGPhoto/sample_data
+*.pyc
