@@ -45,6 +45,8 @@ def convert_xml_to_dat_and_demo(input_dir, dat_output_dir, demo_output_dir):
 
             # --- Demographics Extraction ---
             patientid = ecg.PatientDemographics.get('PatientID')
+            patientFirstName = ecg.PatientDemographics.get('PatientFirstName')
+            patientLastName = ecg.PatientDemographics.get('PatientLastName')
             ecg_date = ecg.TestDemographics.get('AcquisitionDate')
             ecg_time = ecg.TestDemographics.get('AcquisitionTime')
             dob = ecg.PatientDemographics.get('DateofBirth')
@@ -68,7 +70,7 @@ def convert_xml_to_dat_and_demo(input_dir, dat_output_dir, demo_output_dir):
             
             # Append data to lists for later writing
             demo_row = {
-                'filename': record_name, 'patientid': patientid, 'ecg_date': ecg_date, 'ecg_time': ecg_time,
+                'filename': record_name, 'patientid': patientid, 'patientFirstName' : patientFirstName, 'patientLastName' : patientLastName,'ecg_date': ecg_date, 'ecg_time': ecg_time,
                 'dob': dob, 'age': age, 'gender': gender, 'race': race, 'sitename': sitename,
                 'location': location, 'hr': hr, 'pr_interval': pr_interval, 'qrs_duration': qrs_duration,
                 'qtc_duration': qtc_duration, 'paxis': paxis, 'qrsaxis': qrsaxis, 'taxis': taxis
@@ -92,9 +94,16 @@ def convert_xml_to_dat_and_demo(input_dir, dat_output_dir, demo_output_dir):
             print(f"Could not process file {os.path.basename(file_path)}. Error: {e}")
 
     # --- Write collected data to files once at the end ---
+    file_exists = os.path.exists(demo_csv_path)
+
     if all_demo_data:
         df_demo = pd.DataFrame(all_demo_data)
-        df_demo.to_csv(demo_csv_path, index=False)
+        df_demo.to_csv(
+            demo_csv_path, 
+            mode='a', 
+            index=False, 
+            header=not file_exists
+        )
         print(f"\nDemographics saved to {demo_csv_path}")
 
     if processed_record_names:

@@ -1,3 +1,5 @@
 /.venv
 /dat_to_ECGPhoto/sample_data
 *.pyc
+/png_output
+/xml_input

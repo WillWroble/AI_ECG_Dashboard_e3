@@ -1,5 +1,4 @@
-# TensorFlow is installed conditionally in the GitHub Actions workflow, do not uncomment.
-# tensorflow-cpu==2.15.0
+tensorflow-cpu==2.15.0
 
 # Force a modern version of protobuf to resolve library conflicts
 protobuf==4.25.3
