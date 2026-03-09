@@ -2,10 +2,12 @@ import numpy as np
 import warnings
 import argparse
 import sys
+import os
 warnings.filterwarnings("ignore")
 from tensorflow.keras.models import load_model
 from tensorflow.keras.optimizers import Adam
 from Run_Predictions.datasets import ECGSequence
+
 
 def predict(input_file, model_file, output_file, dataset_name='tracings', bs=32):
     """
@@ -25,6 +27,7 @@ def predict(input_file, model_file, output_file, dataset_name='tracings', bs=32)
         y_score = model.predict(seq, verbose=1)
 
     # Save the predictions to a .npy file
+    os.makedirs(os.path.dirname(output_file), exist_ok=True)
     np.save(output_file, y_score)
     print("Output predictions saved to", output_file)
 
